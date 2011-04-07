@@ -6,7 +6,8 @@
 #include <tr1/random>
 
 enum { HEIGHT = 68, WIDTH = 235, BUFFERS = 2};
-const char RED[] = "\033[0;31m";	   /* Color constants */
+// Some color constants, too much time spent buffering so they arent used.
+const char RED[] = "\033[0;31m";
 const char GREEN[] = "\033[0;32m";
 const char BLUE[] = "\033[0;34m";
 const char DEFAULT[] = "\033[0m";
@@ -17,7 +18,6 @@ protected:
    // Private Variables to Life Class.
    int array[BUFFERS][HEIGHT + 2][WIDTH + 2];
    int currentBuffer;
-   int otherBuffer;
    int lifeDensity;
    char life;
    char death;
@@ -57,9 +57,8 @@ protected:
 
       // Draw bottom line of game box
       for(int i = 0; i < WIDTH; i++)
-      {
 	 std::cout << "_";
-      }
+      
       std::cout << std::endl;
    } // showLife
 
@@ -67,7 +66,7 @@ protected:
    {
       int isDone = 1;
       int numNeighbours;
-      
+
       // Create the next generation of life.
       for(int row = 1; row < HEIGHT + 1; ++row)
       {
@@ -75,15 +74,15 @@ protected:
 	 {
 	    numNeighbours = checkNeighbours(row, col);
 
-	    if(array[currentBuffer][row][col] == 1) // If life in the current box.
+	    if(array[currentBuffer][row][col]) // If life in the current box.
 	    {
 	       if(numNeighbours == 2 || numNeighbours == 3) // If 2 or 3 neighbours, stays alive.
 	       {
-		  array[otherBuffer][row][col] = 1;
+		  array[!currentBuffer][row][col] = 1;
 	       }
 	       else
 	       {
-		  array[otherBuffer][row][col] = 0;
+		  array[!currentBuffer][row][col] = 0;
 		  isDone = 0;
 	       }
 	    }
@@ -91,12 +90,12 @@ protected:
 	    {
 	       if(numNeighbours == 3)
 	       {
-		  array[otherBuffer][row][col] = 1;
+		  array[!currentBuffer][row][col] = 1;
 		  isDone = 0;
 	       }
 	       else
 	       {
-		  array[otherBuffer][row][col] = 0;
+		  array[!currentBuffer][row][col] = 0;
 	       }
 	    }
 	 } // for(col)
@@ -109,40 +108,25 @@ protected:
    {
       int numNeighbours = 0;
 
-      if ((array[currentBuffer][row-1][col-1])==1)
+      if (array[currentBuffer][row-1][col-1])
 	 numNeighbours++;
-      if ((array[currentBuffer][row-1][col])==1)
+      if (array[currentBuffer][row-1][col])
 	 numNeighbours++;
-      if ((array[currentBuffer][row-1][col+1])==1)
+      if (array[currentBuffer][row-1][col+1])
 	 numNeighbours++;
-      if ((array[currentBuffer][row][col-1])==1)
+      if (array[currentBuffer][row][col-1])
 	 numNeighbours++;
-      if ((array[currentBuffer][row][col+1])==1)
+      if (array[currentBuffer][row][col+1])
 	 numNeighbours++;
-      if ((array[currentBuffer][row+1][col-1])==1)
+      if (array[currentBuffer][row+1][col-1])
 	 numNeighbours++;
-      if ((array[currentBuffer][row+1][col])==1)
+      if (array[currentBuffer][row+1][col])
 	 numNeighbours++;
-      if ((array[currentBuffer][row+1][col+1])==1)
+      if (array[currentBuffer][row+1][col+1])
 	 numNeighbours++;
 
       return numNeighbours;
    }
-   
-   void setNextGeneration()
-   {
-      if(currentBuffer == 0)
-      {
-	 currentBuffer = 1;
-	 otherBuffer = 0;
-      }
-      else
-      {
-	 currentBuffer = 0;
-	 otherBuffer = 1;
-      }
-   }
-
 
 public:
    void initialize()
@@ -157,8 +141,7 @@ public:
       variate_generator< mt19937&, uniform_real<> > rnd(gen,dist);  // as object "rnd"
 
       currentBuffer = 0;
-      otherBuffer = 1;
-      
+
       int setR;
       int setC;
       int makeRandomly;
@@ -204,7 +187,7 @@ public:
 	    std::cin >> setR;
 	 }
       }
-   }
+   } // Initialize
 
    int run()
    {
@@ -220,7 +203,7 @@ public:
 	 showLife(numGenerations, life, death);
 	 isDone = applyRules();
 	 usleep(60000);
-	 setNextGeneration();
+	 currentBuffer = !currentBuffer;
 	 ++numGenerations;
       }
       showLife(numGenerations, life, death);
@@ -236,6 +219,6 @@ int main()
 
    simulation.initialize();
    simulation.run();
-   
+
    return 0;
 } /* Main */
