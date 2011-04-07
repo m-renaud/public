@@ -1,0 +1,3 @@
+For Conway's Game of Life:
+To run with random initialization, run executable, enter 1 for random, then integer for the density (1 being the most dense)
+then the character for life.
