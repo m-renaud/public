@@ -92,7 +92,7 @@ unsigned pack_size(Args... as)
   return (sizeof...(Args));
 }
 
-// Compute the average over a variadic number of numeric arguements.
+// Compute the average over a variadic list of numeric arguements.
 template <typename... TS>
 auto avg(TS... vals) -> decltype(sum(vals...) / pack_size(vals...))
 {
