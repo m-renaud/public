@@ -1,14 +1,9 @@
 #ifndef __MRR_VARIADIC_ARITHMETIC_HXX__
 #define __MRR_VARIADIC_ARITHMETIC_HXX__
 
-#include <iostream>
-#include <type_traits>
-#include <typeinfo>
-
 
 template <typename T>
 typename std::add_rvalue_reference<T>::type val();
-
 
 //==================================================
 // Variadic Sum Traits
@@ -89,12 +84,15 @@ prod(T val, TS... rest)
 
 //==================================================
 // Variadic Average:
+
+// Returns the number of parameters in the parameter pack.
 template <typename... Args>
-int pack_size(Args... as)
+unsigned pack_size(Args... as)
 {
   return (sizeof...(Args));
 }
 
+// Compute the average over a variadic number of numeric arguements.
 template <typename... TS>
 auto avg(TS... vals) -> decltype(sum(vals...) / pack_size(vals...))
 {
