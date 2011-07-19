@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 
 template <typename T>
 T grayToBin(T g)
