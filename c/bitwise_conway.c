@@ -31,7 +31,6 @@ void initialize()
     grid[s][i] = rand();
     grid[s][i] <<= 32;
     grid[s][i] += rand();
-    grid[!s][i] = 0;
     bit[i] = static_cast<unsigned long long>(0x01ULL << i);
   }
 }
