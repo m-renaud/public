@@ -7,6 +7,9 @@
 #include <boost/variant.hpp>
 
 //===========================================================================
+// Class for representing and ranking poker hands.
+// Uses boost::variant, SFINAE and CRTP.
+// Some help from Paul Preney with the implementation.
 
 template <typename T, typename Traits>
 class Hand_Impl
