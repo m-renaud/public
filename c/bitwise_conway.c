@@ -1,9 +1,7 @@
 // Conways game of life using bits.
 
 #include <cstdlib>
-#include <unistd.h>
 #include <time.h>
-#include <cmath>
 #include <stdio.h>
 
 typedef unsigned long long ull;
@@ -17,7 +15,7 @@ ull mask = 0x00;
 ull bit[BITS];
 
 
-unsigned long long calcNextGen(unsigned sum, unsigned on)
+inline unsigned long long calcNextGen(unsigned sum, unsigned on)
 {
   return static_cast<unsigned long long>((sum == 3) || (sum == 4 && on));
 }
